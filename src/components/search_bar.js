@@ -4,7 +4,7 @@ class SearchBar extends Component{
 
             constructor(props){
                 super(props);   //passes the props to the constructor of the parent class, which is Component in this case.
-                this.state = {term:'Fabian Madurai'};  //Initialises the state object
+                this.state = {term:''};  //Initialises the state object
             }
 
             render (){

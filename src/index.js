@@ -1,27 +1,39 @@
-import React from 'react';
+import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
-
-//If its a js file that we personally wrote, then we have to put the file path
-//in the import statement, like below.
 import SearchBar from './components/search_bar';
+import YTSearch from 'youtube-api-search';
+import VideoList from './components/video_list';
+import VideoDetail from './components/video_detail';
+const API_KEY = 'AIzaSyB-xYyMnnMziHhWUfrsJqHduzCh76FLpHw';
 
-//variable to store YouTUBE API key
-//we installed an npm package called youtube-api-search which makes it easier
-//for us to  query videos.
-const API_KEY = '';
 
-//Fat Arrow Notation.
-
-//Note that below the search component is inside of another component called App. 
-const App =()=> {
-
-return (
-            <div>
-            <SearchBar />    
-            </div>
-            );
-        };      
-
+class App extends Component {
+    constructor(props){
+        super(props);
+                this.state={
+                       videos:[],
+                       selectedVideo:null
+                };
+//in our constructor we get a default search for Man united.
+        YTSearch({key:API_KEY,term:'World Cup 2018'},videos=>{
+            this.setState({videos:videos,
+                            selectedVideo :videos[0]
+            });
+       });
+    }
+    render(){
+        return (
+                    <div>
+                    <SearchBar /> 
+                    <VideoDetail video={this.state.selectedVideo}/>  
+                    <VideoList 
+                    onVideoSelect={selectedVideo=>this.setState({selectedVideo})}
+                    videosReturned={this.state.videos}/> 
+                    </div>
+        );
+            
+};          
+};
 //render this component on the page.
 
 ReactDOM.render(<App />,document.querySelector(".container"));
